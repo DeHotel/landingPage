@@ -15,4 +15,10 @@ return [
         'para' => 'contacto@dehotel.cl',
         'desde' => 'no-reply@dehotel.cl',
     ],
+
+    // Panel de administración (/admin/). El código se pide UNA vez, al crear el primer
+    // administrador; después deja de usarse. Mínimo 16 caracteres, al azar.
+    'admin' => [
+        'codigo_instalacion' => '',
+    ],
 ];

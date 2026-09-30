@@ -3,28 +3,16 @@
 require __DIR__ . '/_db.php';
 require __DIR__ . '/_correo.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Allow: POST');
-    responder(405, ['error' => 'Método no permitido']);
-}
+soloMetodo('POST');
 
-$body = json_decode(file_get_contents('php://input') ?: '', true);
-if (!is_array($body)) {
+$body = leerJson();
+if (!$body) {
     responder(400, ['error' => 'Solicitud inválida.']);
 }
 
 // Campo trampa: si viene lleno es un bot. Se responde OK para no darle pistas.
 if (!empty($body['website'])) {
     responder(200, ['ok' => true]);
-}
-
-function limpiar($valor, int $max): string
-{
-    if (!is_string($valor)) {
-        return '';
-    }
-    $valor = trim($valor);
-    return function_exists('mb_substr') ? mb_substr($valor, 0, $max, 'UTF-8') : substr($valor, 0, $max);
 }
 
 $datos = [
@@ -43,7 +31,7 @@ if (!filter_var($datos['email'], FILTER_VALIDATE_EMAIL)) {
     responder(400, ['error' => 'El correo no parece válido.']);
 }
 
-$ip = $_SERVER['REMOTE_ADDR'] ?? null;
+$ip = ipCliente();
 $userAgent = limpiar($_SERVER['HTTP_USER_AGENT'] ?? '', 255);
 
 try {

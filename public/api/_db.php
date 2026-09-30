@@ -4,12 +4,50 @@
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
+header('Cache-Control: no-store');
+
+// Todas las fechas (PHP y MySQL) en hora de Chile.
+date_default_timezone_set('America/Santiago');
 
 function responder(int $status, array $datos): void
 {
     http_response_code($status);
     echo json_encode($datos, JSON_UNESCAPED_UNICODE);
     exit;
+}
+
+function sinContenido(): void
+{
+    http_response_code(204);
+    exit;
+}
+
+function leerJson(): array
+{
+    $body = json_decode(file_get_contents('php://input') ?: '', true);
+    return is_array($body) ? $body : [];
+}
+
+function limpiar($valor, int $max): string
+{
+    if (!is_string($valor)) {
+        return '';
+    }
+    $valor = trim($valor);
+    return function_exists('mb_substr') ? mb_substr($valor, 0, $max, 'UTF-8') : substr($valor, 0, $max);
+}
+
+function ipCliente(): ?string
+{
+    return $_SERVER['REMOTE_ADDR'] ?? null;
+}
+
+function soloMetodo(string $metodo): void
+{
+    if ($_SERVER['REQUEST_METHOD'] !== $metodo) {
+        header('Allow: ' . $metodo);
+        responder(405, ['error' => 'Método no permitido']);
+    }
 }
 
 function config(): array
@@ -45,5 +83,7 @@ function db(): PDO
         PDO::ATTR_EMULATE_PREPARES => false,
         PDO::ATTR_TIMEOUT => 5,
     ]);
+    // Alinea NOW() y DEFAULT CURRENT_TIMESTAMP con la hora de Chile (incluye horario de verano).
+    $pdo->exec("SET time_zone = '" . date('P') . "'");
     return $pdo;
 }
