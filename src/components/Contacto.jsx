@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { contacto, temasContacto } from "../data/contenido";
 import Icono from "./Icono";
+import { EVENTO_TEMA } from "./ServicioDetalle";
 
 const vacio = {
   nombre: "",
@@ -31,6 +32,17 @@ export default function Contacto() {
   const [error, setError] = useState("");
 
   const cambiar = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  // "Conversemos sobre esto" en el detalle de un servicio deja el tema elegido.
+  useEffect(() => {
+    const onTema = (e) => {
+      if (!temasContacto.includes(e.detail)) return;
+      setForm((f) => ({ ...f, tema: e.detail }));
+      setEstado((s) => (s === "ok" ? "idle" : s));
+    };
+    window.addEventListener(EVENTO_TEMA, onTema);
+    return () => window.removeEventListener(EVENTO_TEMA, onTema);
+  }, []);
 
   const enviar = async (e) => {
     e.preventDefault();
