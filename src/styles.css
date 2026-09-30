@@ -1232,7 +1232,8 @@ p {
 .footer {
   background: #070b17;
   color: rgba(255, 255, 255, 0.75);
-  padding: 56px 0 28px;
+  /* Abajo queda espacio para que el botón flotante de WhatsApp no tape los enlaces. */
+  padding: 56px 0 100px;
 }
 
 .footer .logo {
@@ -1274,11 +1275,99 @@ p {
 }
 
 .footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
   margin-top: 40px;
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.5);
+}
+
+.footer__legal a {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.footer__legal a:hover {
+  color: var(--c-acento);
+}
+
+.formulario__nota {
+  margin: 0;
+  font-size: 0.8rem;
+  text-align: center;
+  color: var(--c-texto-suave);
+}
+
+.formulario__nota a {
+  color: var(--c-acento-2);
+}
+
+/* Política de privacidad (ventana) */
+.privacidad {
+  width: min(720px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: 22px;
+  background: #fff;
+  color: var(--c-texto);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+.privacidad::backdrop {
+  background: rgba(7, 11, 23, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.privacidad[open] {
+  animation: detalle-entra 0.3s ease-out;
+}
+
+.privacidad__caja {
+  position: relative;
+  padding: 40px clamp(22px, 5vw, 48px) 32px;
+}
+
+.privacidad h2 {
+  margin-bottom: 4px;
+  padding-right: 40px;
+}
+
+.privacidad h3 {
+  margin: 26px 0 8px;
+  font-size: 1.05rem;
+}
+
+.privacidad p,
+.privacidad li {
+  color: var(--c-texto-suave);
+  font-size: 0.95rem;
+}
+
+.privacidad ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.privacidad strong {
+  color: var(--c-texto);
+}
+
+.privacidad a {
+  color: var(--c-acento-2);
+}
+
+.privacidad__pie {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--c-borde);
 }
 
 /* WhatsApp flotante */

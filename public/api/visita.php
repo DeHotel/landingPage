@@ -84,6 +84,13 @@ try {
         'INSERT INTO visitas (ip, visitante, pagina, referencia, utm_fuente, dispositivo, navegador, sistema, user_agent)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
     );
+    // Conservación (ver política de privacidad): en ~1 de cada 100 registros se borran
+    // las visitas de más de 24 meses y los intentos de login de más de 90 días.
+    if (random_int(1, 100) === 1) {
+        $pdo->exec('DELETE FROM visitas WHERE creado_en < (NOW() - INTERVAL 24 MONTH)');
+        $pdo->exec('DELETE FROM admin_intentos WHERE creado_en < (NOW() - INTERVAL 90 DAY)');
+    }
+
     $pagina = limpiar($body['pagina'] ?? '', 255);
     $utm = limpiar($body['utm'] ?? '', 100);
     $st->execute([

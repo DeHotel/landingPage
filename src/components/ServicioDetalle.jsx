@@ -50,6 +50,7 @@ export default function ServicioDetalle({ indice, onCerrar, onCambiar }) {
       className="detalle"
       aria-labelledby="detalle-titulo"
       onClose={onCerrar}
+      onCancel={onCerrar} // Esc: se dispara al instante (close llega después)
       onClick={(e) => e.target === ref.current && onCerrar()} // clic en el fondo
     >
       {s && (

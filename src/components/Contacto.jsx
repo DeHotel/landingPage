@@ -165,6 +165,10 @@ export default function Contacto() {
                 {estado === "enviando" ? "Enviando…" : "Enviar mensaje"}
                 {estado !== "enviando" && <Icono nombre="flecha" size={18} />}
               </button>
+              <p className="formulario__nota">
+                Usamos tus datos solo para responder tu consulta. Más información en nuestra{" "}
+                <a href="#privacidad">política de privacidad</a>.
+              </p>
             </>
           )}
         </form>

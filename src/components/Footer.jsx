@@ -23,8 +23,14 @@ export default function Footer() {
         </p>
       </div>
       <div className="contenedor footer__legal">
-        © {new Date().getFullYear()} {marca.nombre}
-        {marca.dominio}. Todos los derechos reservados.
+        <span>
+          © {new Date().getFullYear()} {marca.nombre}
+          {marca.dominio}. Todos los derechos reservados.
+        </span>
+        <span>
+          Registramos datos básicos de las visitas (como la IP) solo con fines estadísticos.{" "}
+          <a href="#privacidad">Política de privacidad</a>
+        </span>
       </div>
     </footer>
   );

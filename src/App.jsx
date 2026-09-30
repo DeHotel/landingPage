@@ -6,6 +6,7 @@ import Proyectos from "./components/Proyectos";
 import Contacto from "./components/Contacto";
 import Footer from "./components/Footer";
 import WhatsAppBoton from "./components/WhatsAppBoton";
+import Privacidad from "./components/Privacidad";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
       </main>
       <Footer />
       <WhatsAppBoton />
+      <Privacidad />
     </>
   );
 }
