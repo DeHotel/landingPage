@@ -64,7 +64,7 @@ Sin eso, el formulario muestra "No pudimos guardar tu mensaje".
 | --- | --- |
 | Textos, servicios, proceso, proyectos, cifras, contacto e imágenes | `src/data/contenido.js` |
 | Colores y tipografías | variables al inicio de `src/styles.css` |
-| Logo (hoy es texto provisorio) | `src/components/Logo.jsx` y `public/favicon.svg` |
+| Logo, favicon e imagen para compartir en redes | `scripts/generar-logo.mjs` → `npm run logo` (reescribe `public/brand/`, `favicon.svg`, `apple-touch-icon.png` y `og-image.png`) |
 | Título y descripción para buscadores | `index.html` |
 | API del formulario | `public/api/contacto.php` |
 

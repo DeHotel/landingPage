@@ -207,15 +207,9 @@ p {
 }
 
 .logo__marca {
-  display: grid;
-  place-items: center;
+  flex: none;
   width: 36px;
   height: 36px;
-  border-radius: 10px;
-  background: var(--degradado);
-  color: var(--c-oscuro);
-  font-size: 0.85rem;
-  letter-spacing: -0.05em;
 }
 
 .logo__dominio {

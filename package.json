@@ -8,15 +8,19 @@
     "build": "vite build",
     "preview": "vite preview",
     "api": "php -S localhost:8000 -t public",
-    "deploy": "vite build && node scripts/deploy.mjs"
+    "deploy": "vite build && node scripts/deploy.mjs",
+    "logo": "node scripts/generar-logo.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@fontsource/space-grotesk": "^5.3.0",
     "@vitejs/plugin-react": "^5.0.0",
     "basic-ftp": "^6.2.1",
+    "opentype.js": "^2.0.0",
+    "sharp": "^0.35.5",
     "vite": "^7.1.0"
   }
 }
