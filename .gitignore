@@ -1,0 +1,10 @@
+node_modules
+dist
+*.local
+vite.config.js.timestamp-*
+
+# Credenciales: nunca versionar
+.env
+.env.deploy
+public/api/config.php
+config.production.php
