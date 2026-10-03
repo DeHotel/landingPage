@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { api } from "./api";
 import Visitas from "./Visitas";
+import Videos from "./Videos";
+import Clientes from "./Clientes";
+import Mensajes from "./Mensajes";
 
 // Módulos del panel. Los "proximamente" se muestran en el menú pero aún no se abren:
 // al construir cada uno, se agrega su componente aquí.
 const MODULOS = [
   { id: "visitas", titulo: "Visitas", icono: IconoVisitas, componente: Visitas },
-  { id: "clientes", titulo: "Clientes", icono: IconoClientes, proximamente: true },
+  { id: "mensajes", titulo: "Mensajes", icono: IconoMensajes, componente: Mensajes },
+  { id: "clientes", titulo: "Clientes", icono: IconoClientes, componente: Clientes },
+  { id: "videos", titulo: "Videos", icono: IconoVideos, componente: Videos },
   { id: "productos", titulo: "Productos y servicios", icono: IconoProductos, proximamente: true },
   { id: "facturacion", titulo: "Facturación", icono: IconoFacturacion, proximamente: true },
 ];
@@ -13,8 +19,16 @@ const MODULOS = [
 export default function Panel({ usuario, onSalir }) {
   const [actual, setActual] = useState("visitas");
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [nuevos, setNuevos] = useState(0); // mensajes web sin revisar (insignia del menú)
   const modulo = MODULOS.find((m) => m.id === actual);
   const Vista = modulo.componente;
+
+  useEffect(() => {
+    api
+      .mensajesNuevos()
+      .then((r) => setNuevos(r.nuevos))
+      .catch(() => {}); // si falta la tabla o algo falla, simplemente no se muestra
+  }, []);
 
   return (
     <div className={`adm-panel ${menuAbierto ? "adm-panel--menu" : ""}`}>
@@ -40,6 +54,11 @@ export default function Panel({ usuario, onSalir }) {
               <m.icono />
               <span>{m.titulo}</span>
               {m.proximamente && <em>Pronto</em>}
+              {m.id === "mensajes" && nuevos > 0 && (
+                <b className="adm-menu__insignia" aria-label={`${nuevos} mensajes nuevos`}>
+                  {nuevos}
+                </b>
+              )}
             </button>
           ))}
         </nav>
@@ -72,7 +91,7 @@ export default function Panel({ usuario, onSalir }) {
           </button>
           <h1>{modulo.titulo}</h1>
         </header>
-        <Vista />
+        <Vista onCambioNuevos={setNuevos} />
       </main>
     </div>
   );
@@ -90,6 +109,22 @@ function IconoVisitas() {
     <Svg>
       <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
       <circle cx="12" cy="12" r="3" />
+    </Svg>
+  );
+}
+function IconoVideos() {
+  return (
+    <Svg>
+      <rect x="2.5" y="5" width="14" height="14" rx="2.5" />
+      <path d="m16.5 10 5-3v10l-5-3z" />
+    </Svg>
+  );
+}
+function IconoMensajes() {
+  return (
+    <Svg>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" />
     </Svg>
   );
 }

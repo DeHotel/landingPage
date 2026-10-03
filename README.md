@@ -37,6 +37,10 @@ desde la pestaña **SQL** o **Importar**:
 | --- | --- |
 | `database/schema.sql` | `contactos` (mensajes del formulario) |
 | `database/002_visitas_admin.sql` | `visitas`, `admin_usuarios`, `admin_intentos` |
+| `database/003_videos.sql` | `videos` (datos de los videos privados del panel) |
+| `database/004_familia.sql` | `ajustes`, `familia_accesos` y columna `videos.visible_familia` |
+| `database/005_grupos.sql` | `video_grupos` y columna `videos.grupo_id` |
+| `database/006_clientes.sql` | `clientes`, `cliente_contactos` y columna `contactos.cliente_id` |
 
 Los scripts solo crean tablas nuevas; no tocan las demás tablas de la base.
 
@@ -67,6 +71,40 @@ Los scripts solo crean tablas nuevas; no tocan las demás tablas de la base.
 - **Visitas del administrador:** al ingresar al panel, ese navegador deja de contarse como visita.
 - **Módulos:** se definen en `src/admin/Panel.jsx`. Clientes, Productos y Facturación aparecen
   como «Pronto» hasta construirlos.
+
+## Clientes y mensajes (panel)
+
+- **Clientes:** empresas o personas naturales con datos de facturación (RUT validado con módulo 11,
+  razón social, giro, dirección, comuna, región), estado (prospecto / activo / inactivo), notas y
+  varias personas de contacto (una principal). Búsqueda por nombre, RUT, correo, comuna o contacto.
+- **Mensajes:** los del formulario de dehotel.cl, por estado (nuevo / contactado / descartado), con
+  insignia en el menú. «Convertir en cliente» precarga la ficha y deja el mensaje vinculado.
+- Eliminar un cliente borra sus contactos; los mensajes vinculados se conservan.
+
+## Videos privados (panel → Videos)
+
+- Se suben desde el panel con un nombre (MP4, WebM o MOV; máximo `videos.max_mb`, 4 GB por defecto).
+- El navegador los envía **por trozos** del tamaño que permita el hosting (`post_max_size`), con
+  reintentos; la miniatura, duración y resolución se obtienen en el navegador antes de subir.
+- Los archivos se guardan en **`dehotel_privado/videos/` al lado de `public_html`** (fuera del sitio
+  público, con nombres al azar). Solo se reproducen vía `api/admin/video-ver.php`, que exige sesión y
+  permite adelantar/retroceder (peticiones *Range*). Otra carpeta: `config.php` → `videos.carpeta`.
+- El deploy no toca esa carpeta. **Respaldo:** descargarla por FTP de vez en cuando.
+- Subidas abandonadas (pestaña cerrada, sin internet) se limpian solas a las 24 h.
+- **Nombre:** se elige al subir y se cambia después con el lápiz ✎ de cada tarjeta o al abrir el video.
+- **Grupos:** se crean con «+ Nuevo grupo», se renombran/eliminan en «Gestionar grupos» (eliminar un
+  grupo no borra sus videos: quedan «Sin grupo»). Cada video se mueve con el selector de su tarjeta,
+  al abrirlo o al subirlo. En `/familia/` los videos se muestran agrupados.
+
+## Página familiar (`/familia/`)
+
+- Tu familia entra a `dehotel.cl/familia/` con **una clave general** y solo **ve** los videos marcados
+  «Visible para la familia» (no puede subir, renombrar ni borrar, y no tiene acceso a `/admin/`).
+- Se administra en el panel → Videos → **Acceso familiar**: definir/cambiar la clave (se guarda con
+  bcrypt), activar/desactivar la página, «Cerrar todos los accesos» y ver los últimos ingresos.
+- El acceso es una cookie firmada (HMAC) válida solo en `/api/familia/`: 30 días con «Recordar este
+  dispositivo», o hasta cerrar el navegador. Cambiar la clave o «Cerrar todos los accesos» la invalida.
+- 5 claves incorrectas desde una IP la bloquean 15 minutos.
 
 ## Conteo de visitas
 

@@ -42,6 +42,46 @@ function ipCliente(): ?string
     return $_SERVER['REMOTE_ADDR'] ?? null;
 }
 
+// Tipo de dispositivo, navegador y sistema a partir del User-Agent.
+function detectarDispositivo(string $ua): array
+{
+    $dispositivo = preg_match('/ipad|tablet|(android(?!.*mobile))/i', $ua) ? 'Tablet'
+        : (preg_match('/mobile|iphone|ipod|android/i', $ua) ? 'Móvil' : 'Escritorio');
+
+    $navegadores = [
+        'Edge' => '/edg\//i',
+        'Opera' => '/opr\/|opera/i',
+        'Samsung' => '/samsungbrowser/i',
+        'Chrome' => '/chrome|crios/i',
+        'Firefox' => '/firefox|fxios/i',
+        'Safari' => '/safari/i',
+    ];
+    $navegador = 'Otro';
+    foreach ($navegadores as $nombre => $patron) {
+        if (preg_match($patron, $ua)) {
+            $navegador = $nombre;
+            break;
+        }
+    }
+
+    $sistemas = [
+        'Windows' => '/windows/i',
+        'Android' => '/android/i',
+        'iOS' => '/iphone|ipad|ipod/i',
+        'macOS' => '/mac os x|macintosh/i',
+        'Linux' => '/linux/i',
+    ];
+    $sistema = 'Otro';
+    foreach ($sistemas as $nombre => $patron) {
+        if (preg_match($patron, $ua)) {
+            $sistema = $nombre;
+            break;
+        }
+    }
+
+    return [$dispositivo, $navegador, $sistema];
+}
+
 function soloMetodo(string $metodo): void
 {
     if ($_SERVER['REQUEST_METHOD'] !== $metodo) {

@@ -28,46 +28,7 @@ if ($host && strcasecmp($host, $_SERVER['HTTP_HOST'] ?? '') !== 0) {
     $referencia = limpiar(preg_replace('/^www\./i', '', $host), 255);
 }
 
-function detectar(string $ua): array
-{
-    $dispositivo = preg_match('/ipad|tablet|(android(?!.*mobile))/i', $ua) ? 'Tablet'
-        : (preg_match('/mobile|iphone|ipod|android/i', $ua) ? 'Móvil' : 'Escritorio');
-
-    $navegadores = [
-        'Edge' => '/edg\//i',
-        'Opera' => '/opr\/|opera/i',
-        'Samsung' => '/samsungbrowser/i',
-        'Chrome' => '/chrome|crios/i',
-        'Firefox' => '/firefox|fxios/i',
-        'Safari' => '/safari/i',
-    ];
-    $navegador = 'Otro';
-    foreach ($navegadores as $nombre => $patron) {
-        if (preg_match($patron, $ua)) {
-            $navegador = $nombre;
-            break;
-        }
-    }
-
-    $sistemas = [
-        'Windows' => '/windows/i',
-        'Android' => '/android/i',
-        'iOS' => '/iphone|ipad|ipod/i',
-        'macOS' => '/mac os x|macintosh/i',
-        'Linux' => '/linux/i',
-    ];
-    $sistema = 'Otro';
-    foreach ($sistemas as $nombre => $patron) {
-        if (preg_match($patron, $ua)) {
-            $sistema = $nombre;
-            break;
-        }
-    }
-
-    return [$dispositivo, $navegador, $sistema];
-}
-
-[$dispositivo, $navegador, $sistema] = detectar($ua);
+[$dispositivo, $navegador, $sistema] = detectarDispositivo($ua);
 $ip = ipCliente();
 
 try {

@@ -3,6 +3,9 @@ dist
 *.local
 vite.config.js.timestamp-*
 
+# Videos privados subidos en pruebas locales (en el hosting quedan fuera de public_html)
+dehotel_privado/
+
 # Credenciales: nunca versionar
 .env
 .env.deploy

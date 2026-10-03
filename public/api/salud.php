@@ -3,7 +3,11 @@
 // Solo informa nombres de tablas propias del sitio (sin datos ni credenciales).
 require __DIR__ . '/_db.php';
 
-const TABLAS = ['contactos', 'visitas', 'admin_usuarios', 'admin_intentos'];
+const TABLAS = [
+    'contactos', 'visitas', 'admin_usuarios', 'admin_intentos',  // schema.sql y 002
+    'videos', 'ajustes', 'familia_accesos', 'video_grupos',       // 003, 004 y 005
+    'clientes', 'cliente_contactos',                              // 006
+];
 
 try {
     $pdo = db();

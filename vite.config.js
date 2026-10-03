@@ -30,6 +30,7 @@ export default defineConfig({
       input: {
         main: path.resolve(raiz, "index.html"),
         admin: path.resolve(raiz, "admin/index.html"),
+        familia: path.resolve(raiz, "familia/index.html"),
       },
       output: {
         manualChunks: (id) => (id.includes("node_modules") ? "vendor" : undefined),

@@ -6,6 +6,26 @@ const DIAS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
 
 export const numero = (n) => new Intl.NumberFormat("es-CL").format(n ?? 0);
 
+export const bytes = (n) => {
+  if (n == null) return "—";
+  const u = ["B", "KB", "MB", "GB", "TB"];
+  let i = 0;
+  while (n >= 1024 && i < u.length - 1) {
+    n /= 1024;
+    i++;
+  }
+  return `${n.toLocaleString("es-CL", { maximumFractionDigits: i >= 3 ? 2 : 1 })} ${u[i]}`;
+};
+
+// 75 → "1:15", 3725 → "1:02:05"
+export const duracion = (s) => {
+  if (s == null) return null;
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const seg = String(s % 60).padStart(2, "0");
+  return h ? `${h}:${String(m).padStart(2, "0")}:${seg}` : `${m}:${seg}`;
+};
+
 export function fechaCorta(ymd) {
   const [, m, d] = ymd.split("-").map(Number);
   return `${d} ${MESES[m - 1]}`;

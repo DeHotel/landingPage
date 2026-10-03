@@ -21,4 +21,11 @@ return [
     'admin' => [
         'codigo_instalacion' => '',
     ],
+
+    // Videos privados del panel. 'carpeta' vacía = carpeta "dehotel_privado/videos" al lado
+    // de public_html (fuera del sitio público). 'max_mb' = tamaño máximo por video.
+    'videos' => [
+        'carpeta' => '',
+        'max_mb' => 4096,
+    ],
 ];
