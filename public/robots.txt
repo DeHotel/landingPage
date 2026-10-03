@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /familia/
+Disallow: /api/
+
+Sitemap: https://dehotel.cl/sitemap.xml

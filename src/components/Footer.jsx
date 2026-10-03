@@ -23,7 +23,7 @@ export default function Footer() {
         </p>
       </div>
       <div className="contenedor footer__legal">
-        <span>
+        <span suppressHydrationWarning>
           © {new Date().getFullYear()} {marca.nombre}
           {marca.dominio}. Todos los derechos reservados.
         </span>

@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "api": "php -S localhost:8000 -t public",
-    "deploy": "vite build && node scripts/deploy.mjs",
+    "deploy": "npm run build && node scripts/deploy.mjs",
     "logo": "node scripts/generar-logo.mjs"
   },
   "dependencies": {
