@@ -7,6 +7,7 @@ const TABLAS = [
     'contactos', 'visitas', 'admin_usuarios', 'admin_intentos',  // schema.sql y 002
     'videos', 'ajustes', 'familia_accesos', 'video_grupos',       // 003, 004 y 005
     'clientes', 'cliente_contactos',                              // 006
+    'fin_cuentas', 'fin_categorias', 'fin_recurrentes', 'fin_movimientos', // 007
 ];
 
 try {

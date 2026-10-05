@@ -4,6 +4,7 @@ import Visitas from "./Visitas";
 import Videos from "./Videos";
 import Clientes from "./Clientes";
 import Mensajes from "./Mensajes";
+import Finanzas from "./finanzas/Finanzas";
 
 // Módulos del panel. Los "proximamente" se muestran en el menú pero aún no se abren:
 // al construir cada uno, se agrega su componente aquí.
@@ -11,6 +12,7 @@ const MODULOS = [
   { id: "visitas", titulo: "Visitas", icono: IconoVisitas, componente: Visitas },
   { id: "mensajes", titulo: "Mensajes", icono: IconoMensajes, componente: Mensajes },
   { id: "clientes", titulo: "Clientes", icono: IconoClientes, componente: Clientes },
+  { id: "finanzas", titulo: "Finanzas", icono: IconoFinanzas, componente: Finanzas },
   { id: "videos", titulo: "Videos", icono: IconoVideos, componente: Videos },
   { id: "productos", titulo: "Productos y servicios", icono: IconoProductos, proximamente: true },
   { id: "facturacion", titulo: "Facturación", icono: IconoFacturacion, proximamente: true },
@@ -125,6 +127,14 @@ function IconoMensajes() {
     <Svg>
       <rect x="3" y="5" width="18" height="14" rx="2" />
       <path d="m3 7 9 6 9-6" />
+    </Svg>
+  );
+}
+function IconoFinanzas() {
+  return (
+    <Svg>
+      <rect x="2.5" y="6" width="19" height="13" rx="2.5" />
+      <path d="M2.5 10.5h19M6.5 15h3" />
     </Svg>
   );
 }

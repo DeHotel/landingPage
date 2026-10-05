@@ -1904,6 +1904,376 @@ a.adm-boton {
   gap: 8px;
 }
 
+/* Finanzas */
+.adm-fin__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.adm-fin__selectores {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.adm-fin__mes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--a-borde);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.adm-fin__mes strong {
+  min-width: 140px;
+  text-align: center;
+  font-family: var(--f-titulo);
+}
+
+.adm-fin__mes button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.adm-fin__mes button:hover {
+  background: var(--a-fondo);
+}
+
+.adm-fin__mes .adm-fin__hoy {
+  width: auto;
+  padding: 0 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--a-indigo);
+}
+
+.adm-fin__filtro {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+.adm-fin__ayuda {
+  flex: 1;
+  min-width: 240px;
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.adm-fin__kpis {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.adm-fin__valor {
+  font-size: 1.6rem;
+}
+
+.adm-kpi:first-child .adm-fin__valor {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+}
+
+.adm-fin__valor--ingreso,
+.adm-kpi:first-child .adm-fin__valor--ingreso {
+  color: #047857;
+}
+
+.adm-fin__valor--egreso,
+.adm-kpi:first-child .adm-fin__valor--egreso {
+  color: var(--a-mal);
+}
+
+.adm-fin__monto-ingreso {
+  color: #047857;
+  font-weight: 600;
+}
+
+.adm-fin__monto-egreso {
+  color: var(--a-mal);
+  font-weight: 600;
+}
+
+.adm-fin__derecha {
+  text-align: right !important;
+}
+
+.adm-fin__flecha {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.adm-fin__flecha--ingreso {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.adm-fin__flecha--egreso {
+  background: #fef2f2;
+  color: var(--a-mal);
+}
+
+.adm-fin__color {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: 0;
+}
+
+.adm-fin__estado {
+  padding: 3px 10px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.adm-fin__estado--pagado {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.adm-fin__estado--pendiente {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.adm-fin__totales {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--a-borde);
+  font-size: 0.9rem;
+}
+
+.adm-fin__boton-ingreso {
+  background: #059669;
+  color: #fff;
+}
+
+.adm-fin__boton-egreso {
+  background: var(--a-mal);
+  color: #fff;
+}
+
+.adm-fin__tipo--ingreso button.activo {
+  color: #047857;
+}
+
+.adm-fin__tipo--egreso button.activo {
+  color: var(--a-mal);
+}
+
+.adm-fin__monto {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--a-borde);
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.adm-fin__monto:focus-within {
+  border-color: var(--a-indigo);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.16);
+}
+
+.adm-fin__monto b {
+  padding: 0 4px 0 12px;
+  color: var(--a-suave);
+}
+
+.adm-ficha__campo .adm-fin__monto input {
+  border: 0;
+  box-shadow: none;
+  padding-left: 2px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.adm-fin__comprobante {
+  display: grid;
+  gap: 8px;
+}
+
+.adm-fin__comprobante-titulo {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.adm-fin__comprobante > .adm-grupos__nuevo {
+  justify-self: start;
+}
+
+.adm-fin__archivo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--a-borde);
+  border-radius: 10px;
+  background: var(--a-fondo);
+}
+
+.adm-fin__archivo-nombre {
+  flex: 1;
+  min-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.88rem;
+}
+
+.adm-fin__pendientes {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.adm-fin__pendientes li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--a-borde);
+  border-radius: 12px;
+}
+
+.adm-fin__pendientes li.vencido {
+  border-color: #fecaca;
+  background: #fff8f8;
+}
+
+.adm-fin__pendiente {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.adm-fin__pendiente-texto {
+  flex: 1;
+  display: grid;
+  min-width: 0;
+}
+
+.adm-fin__pendiente-texto strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.adm-fin__pendiente-texto small {
+  font-size: 0.78rem;
+}
+
+.adm-fin__pendiente-fecha {
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.adm-fin__vencido {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--a-mal);
+  color: #fff;
+  font-size: 0.7rem;
+}
+
+.adm-fin__pendiente-monto {
+  min-width: 100px;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.adm-fin__barra-ingreso {
+  fill: #10b981;
+}
+
+.adm-fin__barra-egreso {
+  fill: #f87171;
+}
+
+.adm-fin__punto-ingreso {
+  background: #10b981;
+}
+
+.adm-fin__punto-egreso {
+  background: #f87171;
+}
+
+.adm-fin__barra--ingreso i {
+  background: #10b981;
+}
+
+.adm-fin__barra--egreso i {
+  background: #f87171;
+}
+
+.adm-fin__pausado td {
+  opacity: 0.6;
+}
+
+.adm-fin__avance {
+  margin-top: 4px;
+  max-width: 140px;
+}
+
+.adm-fin__acciones {
+  text-align: right;
+}
+
+.adm-fin__acciones .adm-boton {
+  margin-left: 4px;
+}
+
+.adm-fin__selector-color {
+  width: 36px;
+  height: 36px;
+  padding: 2px;
+  border: 1px solid var(--a-borde);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.adm-fin__nuevo {
+  margin-top: 12px;
+}
+
+.adm-fin__nuevo input {
+  flex: 1;
+}
+
 /* Responsive */
 @media (max-width: 1180px) {
   .adm-kpis {
@@ -1996,6 +2366,22 @@ a.adm-boton {
 
   .adm-ficha__grilla {
     grid-template-columns: 1fr;
+  }
+
+  .adm-fin__kpis {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .adm-fin__pendientes li {
+    flex-wrap: wrap;
+  }
+
+  .adm-fin__pendientes li > .adm-boton {
+    width: 100%;
+  }
+
+  .adm-fin__mes strong {
+    min-width: 110px;
   }
 
   .adm-ficha__campo--2 {

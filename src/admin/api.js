@@ -60,6 +60,20 @@ export const api = {
   estadoMensaje: (id, estado) => post("mensajes.php", { accion: "estado", id, estado }),
   eliminarMensaje: (id) => post("mensajes.php", { accion: "eliminar", id }),
 
+  finanzas: (params) => llamar(`finanzas.php?${new URLSearchParams(params)}`),
+  guardarMovimiento: (movimiento) => post("finanzas.php", { accion: "guardar", movimiento }),
+  estadoMovimiento: (id, estado) => post("finanzas.php", { accion: "estado", id, estado }),
+  eliminarMovimiento: (id) => post("finanzas.php", { accion: "eliminar", id }),
+  finanzasConfig: () => llamar("finanzas-config.php"),
+  finanzasAccion: (accion, datos) => post("finanzas-config.php", { accion, ...datos }),
+  subirComprobante: (id, archivo, nombre) =>
+    llamar(`finanzas-comprobante.php?id=${id}`, {
+      method: "POST",
+      headers: { "Content-Type": archivo.type, "X-Nombre-Archivo": encodeURIComponent(nombre) },
+      body: archivo,
+    }),
+  quitarComprobante: (id) => post("finanzas-comprobante.php", { accion: "quitar", id }),
+
   familia: () => llamar("familia.php"),
   familiaClave: (clave) => post("familia.php", { accion: "clave", clave }),
   familiaActivo: (activo) => post("familia.php", { accion: "activo", activo }),
@@ -74,3 +88,4 @@ export const api = {
 
 // URLs para <video>/<img>: la cookie de sesión viaja sola (misma ruta /api/admin/).
 export const urlVideo = (id, extra = "") => `/api/admin/video-ver.php?id=${id}${extra}`;
+export const urlComprobante = (id, descargar = false) => `/api/admin/finanzas-comprobante.php?id=${id}${descargar ? "&descargar=1" : ""}`;

@@ -41,6 +41,7 @@ desde la pestaña **SQL** o **Importar**:
 | `database/004_familia.sql` | `ajustes`, `familia_accesos` y columna `videos.visible_familia` |
 | `database/005_grupos.sql` | `video_grupos` y columna `videos.grupo_id` |
 | `database/006_clientes.sql` | `clientes`, `cliente_contactos` y columna `contactos.cliente_id` |
+| `database/007_finanzas.sql` | `fin_cuentas`, `fin_categorias`, `fin_recurrentes`, `fin_movimientos` (+ datos iniciales) |
 
 Los scripts solo crean tablas nuevas; no tocan las demás tablas de la base.
 
@@ -80,6 +81,20 @@ Los scripts solo crean tablas nuevas; no tocan las demás tablas de la base.
 - **Mensajes:** los del formulario de dehotel.cl, por estado (nuevo / contactado / descartado), con
   insignia en el menú. «Convertir en cliente» precarga la ficha y deja el mensaje vinculado.
 - Eliminar un cliente borra sus contactos; los mensajes vinculados se conservan.
+
+## Finanzas (panel → Finanzas)
+
+- **Cuentas** separan las finanzas (vienen «Personal» y «dehotel.cl»); **categorías** de ingresos y
+  egresos editables. Montos en pesos, sin decimales.
+- **Movimientos:** ingreso o egreso, fecha, cuenta, categoría, monto, estado (pagado / pendiente),
+  cliente opcional (ingresos) y **comprobante** (foto o PDF, en `dehotel_privado/comprobantes`, fuera
+  de public_html; las fotos grandes se reducen en el navegador antes de subir).
+- **Recurrentes:** se definen una vez (monto, primer vencimiento, mensual/anual, n° de cuotas o sin
+  término) y generan solos un movimiento «pendiente» por vencimiento, hasta el fin del mes siguiente.
+  Solo desde el mes en que se crean (no rellenan el pasado). Editar un recurrente rehace sus cuotas
+  pendientes futuras; pausarlo o eliminarlo las borra (lo pagado se conserva).
+- **Resumen:** recibido, pagado, saldo y saldo proyectado del mes; vencimientos (atrasados y próximos
+  30 días) con «Marcar pagado»; 12 meses; desglose por categoría.
 
 ## Videos privados (panel → Videos)
 

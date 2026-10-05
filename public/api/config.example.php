@@ -28,4 +28,9 @@ return [
         'carpeta' => '',
         'max_mb' => 4096,
     ],
+
+    // Comprobantes de finanzas. Vacía = "dehotel_privado/comprobantes" al lado de public_html.
+    'finanzas' => [
+        'carpeta' => '',
+    ],
 ];
