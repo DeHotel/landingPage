@@ -114,10 +114,7 @@ function generarPendientes(?int $soloRecurrente = null): int
     );
     $creados = 0;
     foreach (db()->query($sql)->fetchAll() as $r) {
-        $desde = max(
-            new DateTimeImmutable($r['inicio'], $utc),
-            (new DateTimeImmutable(substr($r['creado_en'], 0, 10), $utc))->modify('first day of this month')
-        );
+        $desde = max(new DateTimeImmutable($r['inicio'], $utc), inicioGeneracion($r));
         for ($n = 1; $n <= 1200; $n++) {
             if ($r['cuotas'] !== null && $n > (int) $r['cuotas']) {
                 break;
@@ -137,6 +134,70 @@ function generarPendientes(?int $soloRecurrente = null): int
         }
     }
     return $creados;
+}
+
+// Primer día del mes en que se creó el recurrente: desde ahí trabaja generarPendientes().
+function inicioGeneracion(array $r): DateTimeImmutable
+{
+    return (new DateTimeImmutable(substr($r['creado_en'], 0, 10), new DateTimeZone('UTC')))->modify('first day of this month');
+}
+
+/**
+ * Cuotas anteriores al mes de creación (las que generarPendientes() no crea):
+ * devuelve [esperadas, ya registradas].
+ */
+function cuotasAnteriores(array $r): array
+{
+    $limite = inicioGeneracion($r);
+    $esperadas = 0;
+    for ($n = 1; $n <= 1200; $n++) {
+        if ($r['cuotas'] !== null && $n > (int) $r['cuotas']) {
+            break;
+        }
+        if (vencimientoCuota($r, $n) >= $limite) {
+            break;
+        }
+        $esperadas++;
+    }
+    $st = db()->prepare('SELECT COUNT(*) FROM fin_movimientos WHERE recurrente_id = ? AND fecha < ?');
+    $st->execute([$r['id'], $limite->format('Y-m-d')]);
+    return [$esperadas, (int) $st->fetchColumn()];
+}
+
+/**
+ * Registra como PAGADAS las cuotas de los meses anteriores a la creación del recurrente
+ * (ej. un crédito que empezó hace meses). No duplica las que ya existen.
+ */
+function completarHistorial(int $recurrenteId): int
+{
+    $st = db()->prepare('SELECT * FROM fin_recurrentes WHERE id = ?');
+    $st->execute([$recurrenteId]);
+    $r = $st->fetch();
+    if (!$r) {
+        return 0;
+    }
+    $limite = inicioGeneracion($r);
+    $insertar = db()->prepare(
+        "INSERT IGNORE INTO fin_movimientos
+           (cuenta_id, categoria_id, tipo, fecha, descripcion, monto, estado, recurrente_id, periodo, cuota)
+         VALUES (?, ?, ?, ?, ?, ?, 'pagado', ?, ?, ?)"
+    );
+    $creadas = 0;
+    for ($n = 1; $n <= 1200; $n++) {
+        if ($r['cuotas'] !== null && $n > (int) $r['cuotas']) {
+            break;
+        }
+        $venc = vencimientoCuota($r, $n);
+        if ($venc >= $limite) {
+            break;
+        }
+        $insertar->execute([
+            $r['cuenta_id'], $r['categoria_id'], $r['tipo'], $venc->format('Y-m-d'), $r['descripcion'],
+            $r['monto'], $r['id'], periodoCuota($r, $venc), $n,
+        ]);
+        $creadas += $insertar->rowCount();
+    }
+    return $creadas;
 }
 
 // Borra las cuotas pendientes futuras de un recurrente (al editarlo, pausarlo o eliminarlo).

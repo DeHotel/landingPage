@@ -2,6 +2,7 @@
 // /api/admin/finanzas.php — ingresos y egresos.
 //   GET ?vista=resumen&mes=AAAA-MM&cuenta=ID   → totales del mes, por categoría, 12 meses y vencimientos
 //   GET ?vista=movimientos&mes=&cuenta=&tipo=&estado=&categoria=&buscar=  → movimientos del mes
+//   GET ?vista=proyeccion&meses=12&cuenta=     → flujo por mes (actual y futuros) por categoría y concepto
 //   POST {accion:'guardar', movimiento}        → crea o actualiza (si trae id)
 //   POST {accion:'estado', id, estado}         → pagado / pendiente
 //   POST {accion:'eliminar', id}
@@ -23,6 +24,89 @@ function filtroCuenta(string $alias = 'm'): array
     return $c > 0 ? [" AND $alias.cuenta_id = ?", [$c]] : ['', []];
 }
 
+/**
+ * Proyección de flujo: desde el mes actual, N meses.
+ * - Lo ya registrado (pagado o pendiente) se toma de fin_movimientos.
+ * - Los vencimientos de recurrentes activos que aún no tienen movimiento se calculan
+ *   ("proyectado"): así los meses lejanos también muestran créditos, contratos y sueldos.
+ * Devuelve filas por (tipo, categoría, concepto) con un valor por mes.
+ */
+function proyeccion(int $cantidad, string $sqlCuenta, array $pCuenta): array
+{
+    $utc = new DateTimeZone('UTC');
+    $inicio = (new DateTimeImmutable(date('Y-m-01'), $utc));
+    $meses = [];
+    for ($i = 0; $i < $cantidad; $i++) {
+        $meses[] = $inicio->modify("+$i month")->format('Y-m');
+    }
+    $indice = array_flip($meses);
+    $fin = $inicio->modify("+$cantidad month");
+    $filas = [];
+
+    $sumar = function (string $tipo, ?string $categoria, string $concepto, string $mes, int $monto, bool $proyectado) use (&$filas, $indice, $cantidad) {
+        $clave = "$tipo|" . ($categoria ?? '') . "|$concepto";
+        if (!isset($filas[$clave])) {
+            $filas[$clave] = [
+                'tipo' => $tipo,
+                'categoria' => $categoria ?? 'Sin categoría',
+                'concepto' => $concepto,
+                'valores' => array_fill(0, $cantidad, 0),
+                'proyectados' => array_fill(0, $cantidad, 0),
+            ];
+        }
+        $filas[$clave]['valores'][$indice[$mes]] += $monto;
+        if ($proyectado) {
+            $filas[$clave]['proyectados'][$indice[$mes]] += $monto;
+        }
+    };
+
+    // 1) Movimientos registrados en el horizonte.
+    $st = db()->prepare(
+        "SELECT m.tipo, m.fecha, m.descripcion, m.monto, m.recurrente_id, m.periodo,
+                COALESCE(r.descripcion, m.descripcion) AS concepto, c.nombre AS categoria
+         FROM fin_movimientos m
+         LEFT JOIN fin_categorias c ON c.id = m.categoria_id
+         LEFT JOIN fin_recurrentes r ON r.id = m.recurrente_id
+         WHERE m.fecha >= ? AND m.fecha < ?$sqlCuenta"
+    );
+    $st->execute(array_merge([$inicio->format('Y-m-d'), $fin->format('Y-m-d')], $pCuenta));
+    $registrados = []; // "recurrente|periodo" ya cubiertos
+    foreach ($st->fetchAll() as $m) {
+        $sumar($m['tipo'], $m['categoria'], $m['concepto'], substr($m['fecha'], 0, 7), (int) $m['monto'], false);
+        if ($m['recurrente_id'] !== null) {
+            $registrados[$m['recurrente_id'] . '|' . $m['periodo']] = true;
+        }
+    }
+
+    // 2) Vencimientos de recurrentes activos que aún no tienen movimiento.
+    $sqlCuentaR = str_replace('m.cuenta_id', 'r.cuenta_id', $sqlCuenta);
+    $st = db()->prepare(
+        "SELECT r.*, c.nombre AS categoria FROM fin_recurrentes r
+         LEFT JOIN fin_categorias c ON c.id = r.categoria_id
+         WHERE r.activo = 1$sqlCuentaR"
+    );
+    $st->execute($pCuenta);
+    foreach ($st->fetchAll() as $r) {
+        for ($n = 1; $n <= 1200; $n++) {
+            if ($r['cuotas'] !== null && $n > (int) $r['cuotas']) {
+                break;
+            }
+            $venc = vencimientoCuota($r, $n);
+            if ($venc >= $fin) {
+                break;
+            }
+            if ($venc < $inicio || isset($registrados[$r['id'] . '|' . periodoCuota($r, $venc)])) {
+                continue;
+            }
+            $sumar($r['tipo'], $r['categoria'], $r['descripcion'], $venc->format('Y-m'), (int) $r['monto'], true);
+        }
+    }
+
+    $filas = array_values($filas);
+    usort($filas, fn ($a, $b) => [$a['tipo'], $a['categoria'], $a['concepto']] <=> [$b['tipo'], $b['categoria'], $b['concepto']]);
+    return ['meses' => $meses, 'filas' => $filas];
+}
+
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         generarPendientes();
@@ -30,6 +114,10 @@ try {
         $ini = "$mes-01";
         $fin = (new DateTimeImmutable($ini))->modify('first day of next month')->format('Y-m-d');
         [$sqlCuenta, $pCuenta] = filtroCuenta();
+
+        if (($_GET['vista'] ?? '') === 'proyeccion') {
+            responder(200, proyeccion(max(3, min(36, (int) ($_GET['meses'] ?? 12))), $sqlCuenta, $pCuenta));
+        }
 
         if (($_GET['vista'] ?? 'resumen') === 'movimientos') {
             $where = "m.fecha >= ? AND m.fecha < ?$sqlCuenta";

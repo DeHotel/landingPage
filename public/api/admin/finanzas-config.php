@@ -6,6 +6,8 @@
 //   POST {accion:'guardar_categoria', categoria:{id?, tipo, nombre}}
 //   POST {accion:'eliminar_categoria', id}                → sus movimientos quedan "Sin categoría"
 //   POST {accion:'guardar_recurrente', recurrente:{...}}  → crea/edita y regenera cuotas futuras
+//        (con incluir_anteriores = true registra como pagadas las cuotas de meses pasados)
+//   POST {accion:'completar_historial', id}               → registra como pagadas las cuotas pasadas que falten
 //   POST {accion:'activar_recurrente', id, activo}        → pausar / reanudar
 //   POST {accion:'eliminar_recurrente', id}               → borra cuotas pendientes futuras; lo pagado queda
 require __DIR__ . '/_finanzas.php';
@@ -25,6 +27,7 @@ function listarRecurrentes(): array
     )->fetchAll();
     return array_map(function ($r) {
         $ultima = $r['cuotas'] !== null ? vencimientoCuota($r, (int) $r['cuotas'])->format('Y-m-d') : null;
+        [$esperadas, $registradas] = cuotasAnteriores($r);
         return [
             'id' => (int) $r['id'],
             'cuenta_id' => (int) $r['cuenta_id'],
@@ -43,6 +46,8 @@ function listarRecurrentes(): array
             'notas' => $r['notas'],
             'pagadas' => (int) $r['pagadas'],
             'proximo' => $r['proximo'],
+            // Cuotas de meses anteriores a su creación que aún no están registradas.
+            'anteriores_faltantes' => max(0, $esperadas - $registradas),
         ];
     }, $filas);
 }
@@ -157,8 +162,17 @@ try {
                 $id = (int) $pdo->lastInsertId();
             }
             $creadas = generarPendientes($id);
+            $anteriores = !empty($r['incluir_anteriores']) ? completarHistorial($id) : 0;
             $pdo->commit();
-            responder(200, ['ok' => true, 'id' => $id, 'cuotasGeneradas' => $creadas]);
+            responder(200, ['ok' => true, 'id' => $id, 'cuotasGeneradas' => $creadas, 'anterioresRegistradas' => $anteriores]);
+            // no break
+
+        case 'completar_historial':
+            $id = (int) ($body['id'] ?? 0);
+            $pdo->beginTransaction();
+            $creadas = completarHistorial($id);
+            $pdo->commit();
+            responder(200, ['ok' => true, 'anterioresRegistradas' => $creadas]);
             // no break
 
         case 'activar_recurrente':

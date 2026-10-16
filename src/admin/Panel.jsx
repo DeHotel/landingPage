@@ -7,12 +7,15 @@ import Mensajes from "./Mensajes";
 import Finanzas from "./finanzas/Finanzas";
 
 // Módulos del panel. Los "proximamente" se muestran en el menú pero aún no se abren:
-// al construir cada uno, se agrega su componente aquí.
+// al construir cada uno, se agrega su componente aquí. Los que tienen "enlace" son
+// aplicaciones aparte del mismo hosting: se abren en una pestaña nueva (no se pueden
+// mostrar dentro del panel porque bloquean el uso en marcos, por seguridad).
 const MODULOS = [
   { id: "visitas", titulo: "Visitas", icono: IconoVisitas, componente: Visitas },
   { id: "mensajes", titulo: "Mensajes", icono: IconoMensajes, componente: Mensajes },
   { id: "clientes", titulo: "Clientes", icono: IconoClientes, componente: Clientes },
   { id: "finanzas", titulo: "Finanzas", icono: IconoFinanzas, componente: Finanzas },
+  { id: "pos", titulo: "POS Central", icono: IconoPos, enlace: "/pos-central/dashboard.php" },
   { id: "videos", titulo: "Videos", icono: IconoVideos, componente: Videos },
   { id: "productos", titulo: "Productos y servicios", icono: IconoProductos, proximamente: true },
   { id: "facturacion", titulo: "Facturación", icono: IconoFacturacion, proximamente: true },
@@ -43,7 +46,22 @@ export default function Panel({ usuario, onSalir }) {
         </div>
 
         <nav className="adm-menu">
-          {MODULOS.map((m) => (
+          {MODULOS.map((m) =>
+            m.enlace ? (
+              <a
+                key={m.id}
+                className="adm-menu__item"
+                href={m.enlace}
+                target="_blank"
+                rel="noopener"
+                title="Se abre en una pestaña nueva"
+                onClick={() => setMenuAbierto(false)}
+              >
+                <m.icono />
+                <span>{m.titulo}</span>
+                <em aria-label="se abre en una pestaña nueva">↗</em>
+              </a>
+            ) : (
             <button
               key={m.id}
               className={`adm-menu__item ${m.id === actual ? "adm-menu__item--activo" : ""}`}
@@ -62,7 +80,8 @@ export default function Panel({ usuario, onSalir }) {
                 </b>
               )}
             </button>
-          ))}
+            )
+          )}
         </nav>
 
         <div className="adm-lateral__pie">
@@ -135,6 +154,14 @@ function IconoFinanzas() {
     <Svg>
       <rect x="2.5" y="6" width="19" height="13" rx="2.5" />
       <path d="M2.5 10.5h19M6.5 15h3" />
+    </Svg>
+  );
+}
+function IconoPos() {
+  return (
+    <Svg>
+      <rect x="4" y="3" width="16" height="18" rx="2.5" />
+      <path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M16 15v2" />
     </Svg>
   );
 }

@@ -5,11 +5,13 @@ import Resumen from "./Resumen";
 import Movimientos from "./Movimientos";
 import Recurrentes from "./Recurrentes";
 import Configuracion from "./Configuracion";
+import Proyeccion from "./Proyeccion";
 import MovimientoFicha from "./MovimientoFicha";
 
 const PESTANAS = [
   ["resumen", "Resumen"],
   ["movimientos", "Movimientos"],
+  ["proyeccion", "Proyección"],
   ["recurrentes", "Recurrentes"],
   ["config", "Cuentas y categorías"],
 ];
@@ -51,6 +53,7 @@ export default function Finanzas() {
   }
 
   const conMes = pestana === "resumen" || pestana === "movimientos";
+  const conCuenta = conMes || pestana === "proyeccion";
 
   return (
     <div className="adm-seccion">
@@ -62,8 +65,9 @@ export default function Finanzas() {
             </button>
           ))}
         </div>
-        {conMes && (
+        {conCuenta && (
           <div className="adm-fin__selectores">
+            {conMes && (
             <div className="adm-fin__mes">
               <button onClick={() => setMes((m) => moverMes(m, -1))} aria-label="Mes anterior">
                 ‹
@@ -78,6 +82,7 @@ export default function Finanzas() {
                 </button>
               )}
             </div>
+            )}
             <select className="adm-select adm-fin__filtro" value={cuenta} onChange={(e) => setCuenta(e.target.value)} aria-label="Cuenta">
               <option value="">Todas las cuentas</option>
               {catalogos.cuentas.map((c) => (
@@ -103,6 +108,7 @@ export default function Finanzas() {
           onCambio={refrescar}
         />
       )}
+      {pestana === "proyeccion" && <Proyeccion cuenta={cuenta} version={version} catalogos={catalogos} />}
       {pestana === "recurrentes" && <Recurrentes catalogos={catalogos} onCambio={refrescar} />}
       {pestana === "config" && <Configuracion catalogos={catalogos} onCambio={refrescar} />}
 

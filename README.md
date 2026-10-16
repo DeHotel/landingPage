@@ -91,10 +91,15 @@ Los scripts solo crean tablas nuevas; no tocan las demás tablas de la base.
   de public_html; las fotos grandes se reducen en el navegador antes de subir).
 - **Recurrentes:** se definen una vez (monto, primer vencimiento, mensual/anual, n° de cuotas o sin
   término) y generan solos un movimiento «pendiente» por vencimiento, hasta el fin del mes siguiente.
-  Solo desde el mes en que se crean (no rellenan el pasado). Editar un recurrente rehace sus cuotas
-  pendientes futuras; pausarlo o eliminarlo las borra (lo pagado se conserva).
+  Solo desde el mes en que se crean; las cuotas de meses anteriores se registran como **pagadas** con
+  la casilla al crearlo o con «Completar meses anteriores» (sin duplicar). Editar un recurrente rehace
+  sus cuotas pendientes futuras; pausarlo o eliminarlo las borra (lo pagado se conserva).
 - **Resumen:** recibido, pagado, saldo y saldo proyectado del mes; vencimientos (atrasados y próximos
   30 días) con «Marcar pagado»; 12 meses; desglose por categoría.
+- **Proyección:** tabla de flujo de caja desde el mes actual (6, 12 o 24 meses): ingresos, egresos y
+  saldo por mes, más el saldo final acumulado desde un saldo inicial (se recuerda en el navegador).
+  Usa lo registrado y proyecta los recurrentes activos sin movimiento (en cursiva). Por categoría o
+  por concepto; descarga CSV para Excel.
 
 ## Videos privados (panel → Videos)
 

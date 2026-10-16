@@ -1,7 +1,18 @@
 import { useState } from "react";
 import { api } from "../api";
 import Ventana from "../Ventana";
-import { aNumero, fechaCl, hoyIso, pesos, separarMiles } from "./dinero";
+import { aNumero, fechaCl, hoyIso, nombreMes, pesos, separarMiles } from "./dinero";
+
+// Cuántas cuotas vencen antes del mes actual (las que se pueden registrar como pagadas).
+function cuotasAntesDeEsteMes(inicio, frecuencia, cuotas) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(inicio)) return 0;
+  const hoy = new Date();
+  const [a, m] = inicio.split("-").map(Number);
+  const meses = (hoy.getFullYear() - a) * 12 + (hoy.getMonth() + 1 - m);
+  if (meses <= 0) return 0;
+  const n = frecuencia === "anual" ? Math.ceil(meses / 12) : meses;
+  return cuotas ? Math.min(n, Number(cuotas)) : n;
+}
 
 // Pestaña "Recurrentes": pagos que se repiten (créditos, contratos, remuneración).
 export default function Recurrentes({ catalogos, onCambio }) {
@@ -24,6 +35,20 @@ export default function Recurrentes({ catalogos, onCambio }) {
   };
 
   const lista = catalogos.recurrentes;
+  const conFaltantes = lista.filter((r) => r.anteriores_faltantes > 0);
+  const totalFaltantes = conFaltantes.reduce((s, r) => s + r.anteriores_faltantes, 0);
+
+  const completar = (r) =>
+    accion(
+      () => api.finanzasAccion("completar_historial", { id: r.id }),
+      `«${r.descripcion}»: ${r.anteriores_faltantes} ${r.anteriores_faltantes === 1 ? "cuota anterior registrada" : "cuotas anteriores registradas"} como pagadas.`
+    );
+
+  const completarTodos = () =>
+    accion(
+      () => Promise.all(conFaltantes.map((r) => api.finanzasAccion("completar_historial", { id: r.id }))),
+      `Listo: ${totalFaltantes} ${totalFaltantes === 1 ? "cuota anterior registrada" : "cuotas anteriores registradas"} como pagadas. Ya aparecen en los meses correspondientes.`
+    );
 
   return (
     <div className="adm-seccion">
@@ -38,6 +63,21 @@ export default function Recurrentes({ catalogos, onCambio }) {
 
       {aviso && <p className="adm-aviso">{aviso}</p>}
       {error && <p className="adm-error">{error}</p>}
+
+      {conFaltantes.length > 0 && (
+        <div className="adm-fin__faltantes">
+          <span>
+            <strong>
+              {conFaltantes.length === 1 ? "1 recurrente tiene" : `${conFaltantes.length} recurrentes tienen`} {totalFaltantes}{" "}
+              {totalFaltantes === 1 ? "cuota" : "cuotas"} de meses anteriores sin registrar
+            </strong>
+            <small>Por eso esos meses se ven vacíos. Al completarlos se registran como pagados (puedes cambiar cualquiera a «Por pagar» después).</small>
+          </span>
+          <button className="adm-boton" onClick={completarTodos}>
+            Completar meses anteriores
+          </button>
+        </div>
+      )}
 
       {lista.length === 0 ? (
         <button className="adm-videos__vacio" onClick={() => setFicha({})}>
@@ -90,6 +130,11 @@ export default function Recurrentes({ catalogos, onCambio }) {
                     </td>
                     <td className="adm-nowrap">{r.activo && r.proximo ? fechaCl(r.proximo) : <span className="adm-texto-suave">—</span>}</td>
                     <td className="adm-nowrap adm-fin__acciones">
+                      {r.anteriores_faltantes > 0 && (
+                        <button className="adm-boton adm-boton--suave adm-fin__completar" onClick={() => completar(r)} title="Registra como pagadas las cuotas de meses anteriores">
+                          + {r.anteriores_faltantes} {r.anteriores_faltantes === 1 ? "mes anterior" : "meses anteriores"}
+                        </button>
+                      )}
                       <button className="adm-boton adm-boton--suave" onClick={() => setFicha(r)}>
                         Editar
                       </button>
@@ -153,6 +198,8 @@ function RecurrenteFicha({ inicial, catalogos, onGuardado, onCerrar }) {
     cuotas: inicial.cuotas ?? "",
     notas: inicial.notas ?? "",
   }));
+  const [incluirAnteriores, setIncluirAnteriores] = useState(true);
+  const anteriores = existente ? 0 : cuotasAntesDeEsteMes(r.inicio, r.frecuencia, r.cuotas);
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState("");
   const cambiar = (campo) => (e) => setR((x) => ({ ...x, [campo]: e.target.value }));
@@ -164,12 +211,19 @@ function RecurrenteFicha({ inicial, catalogos, onGuardado, onCerrar }) {
     setError("");
     try {
       const res = await api.finanzasAccion("guardar_recurrente", {
-        recurrente: { ...r, monto: aNumero(r.monto), categoria_id: r.categoria_id || null, cuotas: r.cuotas === "" ? null : Number(r.cuotas) },
+        recurrente: {
+          ...r,
+          monto: aNumero(r.monto),
+          categoria_id: r.categoria_id || null,
+          cuotas: r.cuotas === "" ? null : Number(r.cuotas),
+          incluir_anteriores: anteriores > 0 && incluirAnteriores,
+        },
       });
+      const partes = [];
+      if (res.anterioresRegistradas) partes.push(`${res.anterioresRegistradas} ${res.anterioresRegistradas === 1 ? "cuota anterior registrada como pagada" : "cuotas anteriores registradas como pagadas"}`);
+      if (res.cuotasGeneradas) partes.push(`${res.cuotasGeneradas} ${res.cuotasGeneradas === 1 ? "cuota pendiente" : "cuotas pendientes"}`);
       onGuardado(
-        existente
-          ? "Recurrente actualizado: las cuotas pendientes futuras se ajustaron."
-          : `Recurrente creado${res.cuotasGeneradas ? `: ${res.cuotasGeneradas} ${res.cuotasGeneradas === 1 ? "cuota pendiente generada" : "cuotas pendientes generadas"}` : ""}.`
+        existente ? "Recurrente actualizado: las cuotas pendientes futuras se ajustaron." : `Recurrente creado${partes.length ? `: ${partes.join(" y ")}` : ""}.`
       );
     } catch (err) {
       setError(err.message);
@@ -249,6 +303,19 @@ function RecurrenteFicha({ inicial, catalogos, onGuardado, onCerrar }) {
             <textarea className="adm-ficha__notas" rows={2} value={r.notas ?? ""} onChange={cambiar("notas")} maxLength={5000} />
           </label>
         </div>
+        {anteriores > 0 && (
+          <label className="adm-check adm-check--grande">
+            <input type="checkbox" checked={incluirAnteriores} onChange={(e) => setIncluirAnteriores(e.target.checked)} />
+            <span>
+              <strong>
+                Registrar también {anteriores === 1 ? "la cuota anterior" : `las ${anteriores} cuotas anteriores`} como pagadas
+              </strong>
+              <small className="adm-texto-suave">
+                Desde {nombreMes(r.inicio.slice(0, 7)).toLowerCase()} hasta el mes pasado, para que aparezcan en tus meses anteriores. Si alguna no la pagaste, después puedes cambiarla a «Por pagar».
+              </small>
+            </span>
+          </label>
+        )}
         {r.cuotas && aNumero(r.monto) > 0 && (
           <p className="adm-texto-suave adm-ficha__nota">
             Total: {r.cuotas} cuotas de {pesos(aNumero(r.monto))} = <b>{pesos(aNumero(r.monto) * Number(r.cuotas))}</b>
@@ -256,7 +323,7 @@ function RecurrenteFicha({ inicial, catalogos, onGuardado, onCerrar }) {
         )}
         {error && <p className="adm-error">{error}</p>}
         <footer className="adm-ventana__pie">
-          <span className="adm-texto-suave adm-ficha__nota">Solo se generan cuotas desde este mes en adelante.</span>
+          <span className="adm-texto-suave adm-ficha__nota">Las cuotas de este mes en adelante se generan como pendientes.</span>
           <div className="adm-ficha__botones">
             <button type="button" className="adm-boton adm-boton--suave" onClick={onCerrar}>
               Cancelar
