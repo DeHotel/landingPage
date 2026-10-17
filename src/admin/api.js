@@ -74,6 +74,27 @@ export const api = {
     }),
   quitarComprobante: (id) => post("finanzas-comprobante.php", { accion: "quitar", id }),
 
+  productos: (params = {}) => llamar(`productos.php?${new URLSearchParams(params)}`),
+  guardarProducto: (producto) => post("productos.php", { accion: "guardar", producto }),
+  eliminarProducto: (id) => post("productos.php", { accion: "eliminar", id }),
+
+  documentos: (params) => llamar(`documentos.php?${new URLSearchParams(params)}`),
+  documento: (id) => llamar(`documentos.php?id=${id}`),
+  configFacturacion: () => llamar("documentos.php?config=1"),
+  guardarConfigFacturacion: (config) => post("documentos.php", { accion: "config", config }),
+  guardarDocumento: (documento, items) => post("documentos.php", { accion: "guardar", documento, items }),
+  estadoDocumento: (id, estado) => post("documentos.php", { accion: "estado", id, estado }),
+  folioDocumento: (id, folio) => post("documentos.php", { accion: "folio", id, folio }),
+  convertirDocumento: (id, a) => post("documentos.php", { accion: "convertir", id, a }),
+  eliminarDocumento: (id) => post("documentos.php", { accion: "eliminar", id }),
+  subirArchivoDocumento: (id, archivo) =>
+    llamar(`documento-archivo.php?id=${id}`, {
+      method: "POST",
+      headers: { "Content-Type": archivo.type, "X-Nombre-Archivo": encodeURIComponent(archivo.name) },
+      body: archivo,
+    }),
+  quitarArchivoDocumento: (id) => post("documento-archivo.php", { accion: "quitar", id }),
+
   familia: () => llamar("familia.php"),
   familiaClave: (clave) => post("familia.php", { accion: "clave", clave }),
   familiaActivo: (activo) => post("familia.php", { accion: "activo", activo }),
@@ -88,4 +109,5 @@ export const api = {
 
 // URLs para <video>/<img>: la cookie de sesión viaja sola (misma ruta /api/admin/).
 export const urlVideo = (id, extra = "") => `/api/admin/video-ver.php?id=${id}${extra}`;
-export const urlComprobante = (id, descargar = false) => `/api/admin/finanzas-comprobante.php?id=${id}${descargar ? "&descargar=1" : ""}`;
+export const urlArchivoDocumento = (id) => `/api/admin/documento-archivo.php?id=${id}`;
+export const urlComprobante =(id, descargar = false) => `/api/admin/finanzas-comprobante.php?id=${id}${descargar ? "&descargar=1" : ""}`;

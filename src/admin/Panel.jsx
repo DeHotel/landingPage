@@ -5,6 +5,8 @@ import Videos from "./Videos";
 import Clientes from "./Clientes";
 import Mensajes from "./Mensajes";
 import Finanzas from "./finanzas/Finanzas";
+import Productos from "./facturacion/Productos";
+import Facturacion from "./facturacion/Facturacion";
 
 // Módulos del panel. Los "proximamente" se muestran en el menú pero aún no se abren:
 // al construir cada uno, se agrega su componente aquí. Los que tienen "enlace" son
@@ -17,8 +19,8 @@ const MODULOS = [
   { id: "finanzas", titulo: "Finanzas", icono: IconoFinanzas, componente: Finanzas },
   { id: "pos", titulo: "POS Central", icono: IconoPos, enlace: "/pos-central/dashboard.php" },
   { id: "videos", titulo: "Videos", icono: IconoVideos, componente: Videos },
-  { id: "productos", titulo: "Productos y servicios", icono: IconoProductos, proximamente: true },
-  { id: "facturacion", titulo: "Facturación", icono: IconoFacturacion, proximamente: true },
+  { id: "productos", titulo: "Productos y servicios", icono: IconoProductos, componente: Productos },
+  { id: "facturacion", titulo: "Facturación", icono: IconoFacturacion, componente: Facturacion },
 ];
 
 export default function Panel({ usuario, onSalir }) {

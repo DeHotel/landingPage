@@ -8,6 +8,7 @@ const TABLAS = [
     'videos', 'ajustes', 'familia_accesos', 'video_grupos',       // 003, 004 y 005
     'clientes', 'cliente_contactos',                              // 006
     'fin_cuentas', 'fin_categorias', 'fin_recurrentes', 'fin_movimientos', // 007
+    'productos', 'documentos', 'documento_items',                 // 008
 ];
 
 try {

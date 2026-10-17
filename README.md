@@ -42,6 +42,7 @@ desde la pestaña **SQL** o **Importar**:
 | `database/005_grupos.sql` | `video_grupos` y columna `videos.grupo_id` |
 | `database/006_clientes.sql` | `clientes`, `cliente_contactos` y columna `contactos.cliente_id` |
 | `database/007_finanzas.sql` | `fin_cuentas`, `fin_categorias`, `fin_recurrentes`, `fin_movimientos` (+ datos iniciales) |
+| `database/008_facturacion.sql` | `productos`, `documentos`, `documento_items` (+ ajustes de facturación) |
 
 Los scripts solo crean tablas nuevas; no tocan las demás tablas de la base.
 
@@ -81,6 +82,19 @@ Los scripts solo crean tablas nuevas; no tocan las demás tablas de la base.
 - **Mensajes:** los del formulario de dehotel.cl, por estado (nuevo / contactado / descartado), con
   insignia en el menú. «Convertir en cliente» precarga la ficha y deja el mensaje vinculado.
 - Eliminar un cliente borra sus contactos; los mensajes vinculados se conservan.
+
+## Productos y Facturación (panel)
+
+- **Productos y servicios:** catálogo (nombre, descripción, unidad, precio) para armar documentos.
+- **Cotizaciones** (COT-0001…): cliente, ítems del catálogo o libres, descuento, validez y condiciones;
+  modalidad «exenta» u «honorarios» (con retención). PDF: «Ver / descargar PDF» abre el documento con
+  el logo en una ventana nueva → Imprimir → Guardar como PDF. Una cotización se convierte en factura
+  exenta o boleta de honorarios con un botón (queda «aceptada» y vinculada).
+- **Facturas exentas (FEX) y boletas de honorarios (BHE):** son **registros internos**; el documento
+  tributario se emite en el SII. Se anota el folio (pasa a «emitida») y se adjunta el PDF del SII
+  (`dehotel_privado/documentos`). Lo emitido no se elimina: se marca «anulada».
+- **Datos del emisor** y valores por defecto (retención de honorarios, 15,25 % en 2026 según la Ley
+  21.133; validez de cotizaciones; condiciones) en Facturación → Datos del emisor.
 
 ## Finanzas (panel → Finanzas)
 

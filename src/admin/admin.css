@@ -2243,6 +2243,197 @@ a.adm-boton {
   background: #f87171;
 }
 
+/* Facturación */
+.adm-fac__pestanas {
+  align-self: start;
+  justify-self: start;
+  flex-wrap: wrap;
+}
+
+.adm-fac__corto {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.adm-fac__estado {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.adm-fac__estado--enviada,
+.adm-fac__estado--emitida {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.adm-fac__estado--aceptada,
+.adm-fac__estado--pagada {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.adm-fac__estado--rechazada,
+.adm-fac__estado--anulada {
+  background: #fef2f2;
+  color: var(--a-mal);
+}
+
+.adm-fac__estado--por_emitir {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.adm-fac__vinculo {
+  margin: 0 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--a-indigo);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.adm-fac__items td {
+  padding: 6px 6px;
+  vertical-align: top;
+}
+
+.adm-fac__items input,
+.adm-fac__items textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid var(--a-borde);
+  border-radius: 8px;
+  font: inherit;
+  resize: vertical;
+}
+
+.adm-fac__items input:focus,
+.adm-fac__items textarea:focus {
+  outline: none;
+  border-color: var(--a-indigo);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.16);
+}
+
+.adm-fac__items .adm-fin__monto input {
+  border: 0;
+  box-shadow: none;
+  padding-left: 2px;
+}
+
+.adm-fac__catalogo {
+  width: 100%;
+  margin-bottom: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 0.8rem;
+}
+
+.adm-fac__col-cant {
+  width: 90px;
+}
+
+.adm-fac__col-unidad {
+  width: 100px;
+}
+
+.adm-fac__col-precio {
+  width: 150px;
+}
+
+.adm-fac__items td:first-child {
+  min-width: 260px;
+}
+
+.adm-fac__pie {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+.adm-fac__textos {
+  display: grid;
+  gap: 12px;
+}
+
+.adm-fac__totales {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--a-fondo);
+}
+
+.adm-fac__totales div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.adm-fac__totales dt {
+  color: var(--a-suave);
+  font-size: 0.88rem;
+}
+
+.adm-fac__totales dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.adm-fac__descuento {
+  width: 140px;
+}
+
+.adm-fac__descuento input {
+  width: 100%;
+  padding: 6px 8px 6px 2px;
+  border: 0;
+  text-align: right;
+}
+
+.adm-fac__descuento input:focus {
+  outline: none;
+}
+
+.adm-fac__total {
+  padding-top: 8px;
+  border-top: 1px solid var(--a-borde);
+}
+
+.adm-fac__total dt,
+.adm-fac__total dd {
+  color: var(--a-texto) !important;
+  font-weight: 800 !important;
+  font-size: 1.05rem !important;
+}
+
+.adm-fac__liquido dd {
+  color: #047857;
+  font-weight: 800;
+}
+
+.adm-fac__pct {
+  width: 52px;
+  padding: 3px 6px;
+  border: 1px solid var(--a-borde);
+  border-radius: 6px;
+  text-align: right;
+}
+
 /* Proyección */
 .adm-fin__saldo-inicial {
   display: flex;
@@ -2547,6 +2738,10 @@ a.adm-boton {
 
   .adm-fin__kpis {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .adm-fac__pie {
+    grid-template-columns: 1fr;
   }
 
   .adm-fin__pendientes li {
