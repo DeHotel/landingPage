@@ -140,6 +140,17 @@ Los scripts solo crean tablas nuevas; no tocan las demás tablas de la base.
   dispositivo», o hasta cerrar el navegador. Cambiar la clave o «Cerrar todos los accesos» la invalida.
 - 5 claves incorrectas desde una IP la bloquean 15 minutos.
 
+## Páginas de proyectos (`/proyectos/…`)
+
+- **Latido POS** (`/proyectos/latido-pos/`): página propia para Google, con título, descripción,
+  imagen para compartir y datos estructurados (`SoftwareApplication`, migas y preguntas frecuentes) en
+  `proyectos/latido-pos/index.html`. Los textos están en `src/data/contenido.js` → `latidoPos`; el componente,
+  en `src/proyectos/LatidoPos.jsx`, y las capturas (con datos de ejemplo), en `public/img/proyectos/latido-pos/`.
+- En la portada aparece como tarjeta destacada (`destacado: true` y `enlace` en `proyectos`).
+- Se prerenderiza igual que la portada (`scripts/prerender.mjs` → `PAGINAS`) y está en `public/sitemap.xml`.
+- **Página nueva de proyecto:** crear su `index.html` y su componente, y agregarla en `vite.config.js`
+  (`input`), en `PAGINAS` de `scripts/prerender.mjs` y en `public/sitemap.xml`.
+
 ## Conteo de visitas
 
 `src/visitas.js` llama a `/api/visita.php` al abrir la landing. Se guarda fecha/hora (hora de Chile),

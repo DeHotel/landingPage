@@ -218,7 +218,18 @@ export const tecnologias = [
   "Docker",
 ];
 
+// "enlace": el proyecto tiene página propia; sin enlace, la tarjeta lleva a Contacto.
+// "destacado": se muestra como tarjeta ancha sobre las demás.
 export const proyectos = [
+  {
+    titulo: "Latido POS: punto de venta para almacenes",
+    categoria: "Producto propio · Windows",
+    texto: "Sistema de punto de venta para almacenes y minimarkets en Chile: código de barras y balanza, boleta electrónica, caja con varios cajeros, fiado, stock e informes de ventas y utilidad. Funciona sin internet.",
+    imagen: "/img/proyectos/latido-pos/venta-800.webp",
+    logo: "/img/proyectos/latido-pos/latido-marca.svg",
+    enlace: "/proyectos/latido-pos/",
+    destacado: true,
+  },
   {
     titulo: "Sistema de gestión hotelera", // EJEMPLO
     categoria: "Aplicación web",
@@ -246,5 +257,84 @@ export const temasContacto = [
   "Automatización",
   "Datos y reportería",
   "Soporte o mantención",
+  "Latido POS (punto de venta)",
   "Otro",
 ];
+
+// Página de Latido POS (/proyectos/latido-pos/). El título y la descripción para Google
+// están en proyectos/latido-pos/index.html; las capturas, en public/img/proyectos/latido-pos/.
+export const latidoPos = {
+  ruta: "/proyectos/latido-pos/",
+  tema: "Latido POS (punto de venta)",
+  titulo: "Latido POS: sistema de punto de venta para almacenes y minimarkets",
+  subtitulo:
+    "Vende rápido con código de barras, balanza o botones; emite boleta electrónica, controla la caja, el fiado y el stock, y mira cuánto vendes y cuánto ganas. Se instala en el computador del negocio y funciona sin internet.",
+  destacados: [
+    { valor: "Sin internet", etiqueta: "la venta nunca se detiene" },
+    { valor: "Boleta SII", etiqueta: "con proveedor autorizado" },
+    { valor: "Varias cajas", etiqueta: "en la red del local" },
+    { valor: "Hecho en Chile", etiqueta: "pesos, RUT e IVA" },
+  ],
+  funciones: [
+    { icono: "carro", titulo: "Venta rápida", texto: "Lector de códigos de barras, búsqueda por nombre, «3*pan» para varias unidades y un panel de botones por grupo para pan, verduras o pantallas táctiles." },
+    { icono: "balanza", titulo: "Productos por kilo", texto: "Venta a granel con balanza o tecleando el peso, y lectura de etiquetas de balanza con el precio o el peso incluido." },
+    { icono: "documento", titulo: "Boleta electrónica", texto: "Emisión a través de un proveedor autorizado por el SII. Si se corta internet, la boleta queda pendiente y se reintenta sola." },
+    { icono: "caja", titulo: "Caja y turnos", texto: "Apertura y cierre con arqueo, efectivo esperado, ingresos y retiros. Efectivo, débito, crédito, transferencia y fiado." },
+    { icono: "usuarios", titulo: "Cajeros y permisos", texto: "Un usuario por persona. Cambios de precio y devoluciones con autorización del administrador, y todo queda registrado." },
+    { icono: "libreta", titulo: "Fiado y clientes", texto: "Cupo por cliente, abonos y estado de cuenta. La deuda se calcula de los movimientos, así que no se descuadra." },
+    { icono: "etiqueta", titulo: "Promociones y paquetes", texto: "Descuentos por período, precio fijo, «lleva 3 paga 2» y paquetes que descuentan el stock de cada componente." },
+    { icono: "cajas", titulo: "Stock, compras y kardex", texto: "Compras a proveedores con pagos y saldos, kardex por producto, niveles de stock, vencimientos por lote y pedidos a proveedores." },
+    { icono: "grafico", titulo: "Informes de ventas y utilidad", texto: "Venta neta, costo, utilidad y margen por día, grupo y producto, y ventas por hora del día. Exporta a Excel o imprime." },
+    { icono: "red", titulo: "Varias cajas en red", texto: "Un computador principal con la base de datos y cajas secundarias conectadas por la red del local, con el mismo stock al instante." },
+    { icono: "escudo", titulo: "Respaldos automáticos", texto: "Copia diaria verificada de toda la información, con una copia adicional en un pendrive o en una carpeta en la nube." },
+    { icono: "nube", titulo: "Actualizaciones y panel central", texto: "Se actualiza solo con instaladores firmados y, si se activa, envía un resumen de actividad a un panel central para ver varios locales." },
+  ],
+  pantallas: [
+    {
+      imagen: "venta",
+      titulo: "Una pantalla de venta pensada para la fila",
+      texto: "El carro a la izquierda, los grupos y productos al centro y el cobro a la derecha. Se escanea, se toca o se busca: lo que sea más rápido para cada producto. El vuelto se calcula solo.",
+      alt: "Pantalla de venta de Latido POS con productos en el carro, panel de grupos y medios de pago",
+    },
+    {
+      imagen: "informes",
+      titulo: "Cuánto vendiste y cuánto ganaste",
+      texto: "El informe de ventas y utilidades muestra la venta neta, el costo de lo vendido, la utilidad con su margen y el ticket promedio, día por día y por grupo o producto: qué vende más y qué deja más.",
+      alt: "Informe de ventas y utilidades de Latido POS con resumen y gráfico de ventas por día",
+    },
+    {
+      imagen: "horarios",
+      titulo: "¿A qué hora se vende más?",
+      texto: "Las ventas por hora del día y por día de la semana ayudan a decidir turnos, horarios de reposición y qué productos tener a mano en cada momento.",
+      alt: "Estadísticas de Latido POS con las ventas por hora del día y las horas más fuertes destacadas",
+    },
+  ],
+  paraQuien: ["Almacenes y negocios de barrio", "Minimarkets", "Botillerías", "Panaderías y amasanderías", "Verdulerías y fruterías", "Kioscos y bazares"],
+  tecnologia: [".NET 9", "React 19", "TypeScript", "SQLite", "WPF + WebView2", "PHP + MySQL (panel central)", "Instalador para Windows"],
+  preguntas: [
+    {
+      p: "¿Necesita internet para funcionar?",
+      r: "No. Latido POS se instala en el computador del negocio y guarda la información ahí mismo, así que se puede vender aunque se corte internet. La conexión solo se usa para las boletas electrónicas (las pendientes se envían solas al volver la conexión), las actualizaciones y, si se activa, el panel central.",
+    },
+    {
+      p: "¿Emite boleta electrónica?",
+      r: "Sí, a través de un proveedor autorizado por el SII. Cada negocio usa su propia cuenta en el proveedor y el sistema guarda su clave cifrada.",
+    },
+    {
+      p: "¿Qué equipos necesito?",
+      r: "Un computador con Windows. Opcionalmente: impresora térmica de tickets con cajón de dinero, lector de códigos de barras y balanza. El instalador incluye todo lo necesario para que el programa funcione.",
+    },
+    {
+      p: "¿Sirve para más de una caja?",
+      r: "Sí. Un computador principal guarda la base de datos y las demás cajas se conectan por la red del local; todas ven el mismo stock al instante y cada cajero abre y cierra su propia caja.",
+    },
+    {
+      p: "¿Puedo cargar mis productos de una vez?",
+      r: "Sí. Se importan cientos de productos desde Excel o CSV, con una revisión previa que muestra los errores fila por fila antes de guardar.",
+    },
+    {
+      p: "¿Qué pasa con mis datos?",
+      r: "Quedan en el computador del negocio. Se respaldan automáticamente todos los días y se puede guardar una copia adicional en un pendrive o en una carpeta sincronizada con la nube.",
+    },
+  ],
+};

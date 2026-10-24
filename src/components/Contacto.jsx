@@ -26,8 +26,13 @@ async function enviarMensaje(datos) {
   return json;
 }
 
-export default function Contacto() {
-  const [form, setForm] = useState(vacio);
+// temaInicial, titulo y texto permiten reutilizar el formulario en otras páginas (ej. Latido POS).
+export default function Contacto({
+  temaInicial = "",
+  titulo = "Cuéntanos qué necesitas construir",
+  texto = "Escríbenos con una idea general de tu proyecto. Te respondemos en menos de 24 horas hábiles para agendar una primera conversación, sin costo.",
+}) {
+  const [form, setForm] = useState({ ...vacio, tema: temaInicial });
   const [estado, setEstado] = useState("idle"); // idle | enviando | ok | error
   const [error, setError] = useState("");
 
@@ -62,11 +67,8 @@ export default function Contacto() {
       <div className="contenedor contacto">
         <div className="contacto__info">
           <p className="sobretitulo">Contacto</p>
-          <h2>Cuéntanos qué necesitas construir</h2>
-          <p className="texto-suave">
-            Escríbenos con una idea general de tu proyecto. Te respondemos en menos de 24 horas
-            hábiles para agendar una primera conversación, sin costo.
-          </p>
+          <h2>{titulo}</h2>
+          <p className="texto-suave">{texto}</p>
 
           <ul className="contacto__datos">
             <li>

@@ -25,12 +25,13 @@ function sinConfigLocal() {
 export default defineConfig({
   plugins: [react(), sinConfigLocal()],
   build: {
-    // Dos páginas: la landing (/) y el panel de administración (/admin/).
+    // Páginas: la landing (/), el panel (/admin/), la familiar (/familia/) y las de proyectos.
     rollupOptions: {
       input: {
         main: path.resolve(raiz, "index.html"),
         admin: path.resolve(raiz, "admin/index.html"),
         familia: path.resolve(raiz, "familia/index.html"),
+        latidoPos: path.resolve(raiz, "proyectos/latido-pos/index.html"),
       },
       output: {
         manualChunks: (id) => (id.includes("node_modules") ? "vendor" : undefined),

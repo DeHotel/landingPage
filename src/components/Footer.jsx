@@ -1,17 +1,17 @@
 import { marca, navegacion, contacto } from "../data/contenido";
 import Logo from "./Logo";
 
-export default function Footer() {
+export default function Footer({ base = "" }) {
   return (
     <footer className="footer">
       <div className="contenedor footer__fila">
         <div>
-          <Logo />
+          <Logo base={base} />
           <p className="footer__eslogan">{marca.eslogan}</p>
         </div>
         <nav className="footer__nav">
           {navegacion.map((item) => (
-            <a key={item.id} href={`#${item.id}`}>
+            <a key={item.id} href={`${base}#${item.id}`}>
               {item.label}
             </a>
           ))}

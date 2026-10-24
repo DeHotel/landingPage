@@ -3,7 +3,8 @@ import { navegacion } from "../data/contenido";
 import Icono from "./Icono";
 import Logo from "./Logo";
 
-export default function Navbar() {
+// base: "" en la landing; "/" en otras páginas, para que los enlaces vuelvan a las secciones de la portada.
+export default function Navbar({ base = "" }) {
   const [scrolled, setScrolled] = useState(false);
   const [abierto, setAbierto] = useState(false);
 
@@ -19,11 +20,11 @@ export default function Navbar() {
   return (
     <header className={`navbar ${scrolled || abierto ? "navbar--solida" : ""}`}>
       <div className="contenedor navbar__fila">
-        <Logo onClick={cerrar} />
+        <Logo onClick={cerrar} base={base} />
 
         <nav className={`navbar__menu ${abierto ? "navbar__menu--abierto" : ""}`}>
           {navegacion.map((item) => (
-            <a key={item.id} href={`#${item.id}`} onClick={cerrar}>
+            <a key={item.id} href={`${base}#${item.id}`} onClick={cerrar}>
               {item.label}
             </a>
           ))}
