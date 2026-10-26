@@ -4,9 +4,10 @@ import Footer from "../components/Footer";
 import WhatsAppBoton from "../components/WhatsAppBoton";
 import Privacidad from "../components/Privacidad";
 import Icono from "../components/Icono";
-import { latidoPos as lp } from "../data/contenido";
+import { contacto, latidoPos as lp } from "../data/contenido";
 
 const IMG = "/img/proyectos/latido-pos";
+const MENSAJE_PRUEBA = `Hola, quiero la prueba gratis de ${lp.prueba.dias} días de Latido POS para mi negocio.`;
 
 // Captura con marco de ventana; en celulares se carga la versión de 800 px.
 function Captura({ nombre, alt, prioridad = false }) {
@@ -47,11 +48,14 @@ export default function LatidoPos() {
                 <img src={`${IMG}/latido-marca.svg`} alt="" width="44" height="44" />
                 Latido POS
               </p>
+              <p className="latido-insignia">
+                <span aria-hidden="true" /> Prueba gratis por {lp.prueba.dias} días
+              </p>
               <h1>{lp.titulo}</h1>
               <p className="latido-hero__sub">{lp.subtitulo}</p>
               <div className="hero__acciones">
-                <a href="#contacto" className="boton boton--latido">
-                  Solicitar una demostración
+                <a href="#prueba" className="boton boton--latido">
+                  Probar gratis {lp.prueba.dias} días
                 </a>
                 <a href="#funciones" className="boton boton--contorno">
                   Ver funciones
@@ -72,14 +76,46 @@ export default function LatidoPos() {
           </div>
         </section>
 
-        <section id="funciones" className="seccion">
+        <section id="prueba" className="seccion latido-prueba">
+          <div className="contenedor">
+            <div className="encabezado">
+              <p className="sobretitulo latido-sobretitulo">Prueba gratis</p>
+              <h2>{lp.prueba.titulo}</h2>
+              <p className="texto-suave">{lp.prueba.texto}</p>
+            </div>
+            <ol className="latido-pasos">
+              {lp.prueba.pasos.map((p, i) => (
+                <li key={p.titulo}>
+                  <span className="latido-pasos__numero">{i + 1}</span>
+                  <h3>{p.titulo}</h3>
+                  <p className="texto-suave">{p.texto}</p>
+                </li>
+              ))}
+            </ol>
+            <div className="latido-prueba__acciones">
+              <a href="#contacto" className="boton boton--latido">
+                Solicitar mi prueba gratis
+              </a>
+              <a
+                href={`https://wa.me/${contacto.whatsapp}?text=${encodeURIComponent(MENSAJE_PRUEBA)}`}
+                className="boton boton--contorno-oscuro"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Pedirla por WhatsApp
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="funciones" className="seccion seccion--alterna">
           <div className="contenedor">
             <div className="encabezado">
               <p className="sobretitulo latido-sobretitulo">Funciones</p>
-              <h2>Todo lo que un almacén necesita para vender y controlar su negocio</h2>
+              <h2>Todo lo que un minimarket o bazar necesita para vender y controlar su negocio</h2>
               <p className="texto-suave">
-                Desarrollado por dehotel.cl para el día a día de un negocio de barrio: rápido para el cajero y claro
-                para el dueño.
+                Desarrollado por dehotel.cl para el día a día de los pequeños negocios de barrio: rápido para el cajero
+                y claro para el dueño.
               </p>
             </div>
             <div className="grilla grilla--3">
@@ -96,7 +132,7 @@ export default function LatidoPos() {
           </div>
         </section>
 
-        <section id="pantallas" className="seccion seccion--alterna">
+        <section id="pantallas" className="seccion">
           <div className="contenedor">
             <div className="encabezado">
               <p className="sobretitulo latido-sobretitulo">Pantallas</p>
@@ -115,11 +151,11 @@ export default function LatidoPos() {
           </div>
         </section>
 
-        <section className="seccion">
+        <section className="seccion seccion--alterna">
           <div className="contenedor latido-dos">
             <div>
               <p className="sobretitulo latido-sobretitulo">Para quién</p>
-              <h2>Pensado para el comercio de barrio</h2>
+              <h2>Para minimarkets, bazares y pequeños negocios de barrio</h2>
               <ul className="latido-lista">
                 {lp.paraQuien.map((x) => (
                   <li key={x}>
@@ -144,7 +180,7 @@ export default function LatidoPos() {
           </div>
         </section>
 
-        <section id="preguntas" className="seccion seccion--alterna">
+        <section id="preguntas" className="seccion">
           <div className="contenedor latido-preguntas">
             <div className="encabezado">
               <p className="sobretitulo latido-sobretitulo">Preguntas frecuentes</p>
@@ -161,12 +197,12 @@ export default function LatidoPos() {
 
         <Contacto
           temaInicial={lp.tema}
-          titulo="¿Quieres ver Latido POS en tu negocio?"
-          texto="Escríbenos y coordinamos una demostración. Te contamos cómo se instala, qué equipos necesitas y cómo cargar tus productos."
+          titulo={`Pide tu prueba gratis de ${lp.prueba.dias} días`}
+          texto="Cuéntanos el nombre y el tipo de tu negocio. Te contactamos para coordinar la instalación, ver qué equipos tienes y ayudarte a cargar tus productos."
         />
       </main>
       <Footer base="/" />
-      <WhatsAppBoton />
+      <WhatsAppBoton mensaje={MENSAJE_PRUEBA} />
       <Privacidad />
     </>
   );

@@ -146,7 +146,8 @@ Los scripts solo crean tablas nuevas; no tocan las demás tablas de la base.
   imagen para compartir y datos estructurados (`SoftwareApplication`, migas y preguntas frecuentes) en
   `proyectos/latido-pos/index.html`. Los textos están en `src/data/contenido.js` → `latidoPos`; el componente,
   en `src/proyectos/LatidoPos.jsx`, y las capturas (con datos de ejemplo), en `public/img/proyectos/latido-pos/`.
-- En la portada aparece como tarjeta destacada (`destacado: true` y `enlace` en `proyectos`).
+- En la portada aparece como tarjeta destacada (`destacado: true`, `enlace` y `etiqueta` en `proyectos`).
+- **Prueba gratis de 15 días:** textos en `latidoPos.prueba`; en Google va en el título, la descripción y como `Offer` (precio 0, `eligibleDuration` 15 días). El programa no tiene licencias: la prueba se pide con el formulario (tema «Prueba gratis Latido POS (15 días)») o por WhatsApp.
 - Se prerenderiza igual que la portada (`scripts/prerender.mjs` → `PAGINAS`) y está en `public/sitemap.xml`.
 - **Página nueva de proyecto:** crear su `index.html` y su componente, y agregarla en `vite.config.js`
   (`input`), en `PAGINAS` de `scripts/prerender.mjs` y en `public/sitemap.xml`.

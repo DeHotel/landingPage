@@ -1586,6 +1586,26 @@ p {
   margin-bottom: 16px;
 }
 
+.proyecto-destacado__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.proyecto-destacado__chips .proyecto-destacado__categoria {
+  margin-bottom: 0;
+}
+
+.proyecto-destacado__oferta {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #10aa76, #097852);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
 .proyecto-destacado h3 {
   display: flex;
   align-items: center;
@@ -1661,6 +1681,76 @@ p {
   gap: 12px;
   font: 600 1.25rem var(--f-titulo);
   margin-bottom: 16px;
+}
+
+.latido-insignia {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border: 1px solid rgba(79, 209, 165, 0.45);
+  border-radius: 999px;
+  background: rgba(16, 170, 118, 0.14);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #7ee2bf;
+  margin-bottom: 18px;
+}
+
+.latido-insignia span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4fd1a5;
+  box-shadow: 0 0 0 4px rgba(79, 209, 165, 0.2);
+}
+
+.latido-prueba {
+  background: linear-gradient(180deg, rgba(16, 170, 118, 0.07), transparent 70%);
+}
+
+.latido-pasos {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 0;
+  margin: 0 0 40px;
+}
+
+.latido-pasos li {
+  padding: 28px 26px;
+  border: 1px solid var(--c-borde);
+  border-radius: var(--radio);
+  background: #fff;
+}
+
+.latido-pasos__numero {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10aa76, #097852);
+  color: #fff;
+  font: 600 1.1rem var(--f-titulo);
+}
+
+.latido-pasos h3 {
+  font-size: 1.1rem;
+}
+
+.latido-pasos p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.latido-prueba__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
 }
 
 .latido-captura {
@@ -1850,5 +1940,15 @@ p {
 
   .latido-destacados {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .latido-pasos {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .latido-prueba__acciones .boton {
+    width: 100%;
   }
 }

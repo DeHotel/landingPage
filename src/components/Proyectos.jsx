@@ -19,7 +19,10 @@ export default function Proyectos() {
               <img src={p.imagen} alt="" loading="lazy" width="800" height="500" />
             </a>
             <div className="proyecto-destacado__cuerpo">
-              <span className="proyecto-destacado__categoria">{p.categoria}</span>
+              <div className="proyecto-destacado__chips">
+                <span className="proyecto-destacado__categoria">{p.categoria}</span>
+                {p.etiqueta && <span className="proyecto-destacado__oferta">{p.etiqueta}</span>}
+              </div>
               <h3>
                 {p.logo && <img src={p.logo} alt="" width="34" height="34" />}
                 <a href={p.enlace}>{p.titulo}</a>

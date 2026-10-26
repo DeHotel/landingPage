@@ -1,7 +1,8 @@
 import { contacto } from "../data/contenido";
 
-export default function WhatsAppBoton() {
-  const texto = encodeURIComponent("Hola, quiero conversar sobre un proyecto de software para mi empresa.");
+// mensaje: texto que queda escrito en WhatsApp (cada página puede usar el suyo).
+export default function WhatsAppBoton({ mensaje = "Hola, quiero conversar sobre un proyecto de software para mi empresa." }) {
+  const texto = encodeURIComponent(mensaje);
   return (
     <a
       className="whatsapp"

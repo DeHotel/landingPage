@@ -222,9 +222,10 @@ export const tecnologias = [
 // "destacado": se muestra como tarjeta ancha sobre las demás.
 export const proyectos = [
   {
-    titulo: "Latido POS: punto de venta para almacenes",
+    titulo: "Latido POS: punto de venta para minimarkets, bazares y negocios de barrio",
     categoria: "Producto propio · Windows",
-    texto: "Sistema de punto de venta para almacenes y minimarkets en Chile: código de barras y balanza, boleta electrónica, caja con varios cajeros, fiado, stock e informes de ventas y utilidad. Funciona sin internet.",
+    etiqueta: "Prueba gratis 15 días",
+    texto: "Sistema de punto de venta para minimarkets, almacenes, bazares y pequeños negocios de barrio en Chile: código de barras y balanza, boleta electrónica, caja con varios cajeros, fiado, stock e informes de ventas y utilidad. Funciona sin internet.",
     imagen: "/img/proyectos/latido-pos/venta-800.webp",
     logo: "/img/proyectos/latido-pos/latido-marca.svg",
     enlace: "/proyectos/latido-pos/",
@@ -258,6 +259,7 @@ export const temasContacto = [
   "Datos y reportería",
   "Soporte o mantención",
   "Latido POS (punto de venta)",
+  "Prueba gratis Latido POS (15 días)",
   "Otro",
 ];
 
@@ -265,14 +267,25 @@ export const temasContacto = [
 // están en proyectos/latido-pos/index.html; las capturas, en public/img/proyectos/latido-pos/.
 export const latidoPos = {
   ruta: "/proyectos/latido-pos/",
-  tema: "Latido POS (punto de venta)",
-  titulo: "Latido POS: sistema de punto de venta para almacenes y minimarkets",
+  tema: "Prueba gratis Latido POS (15 días)",
+  titulo: "Latido POS: punto de venta para minimarkets, bazares y negocios de barrio",
   subtitulo:
     "Vende rápido con código de barras, balanza o botones; emite boleta electrónica, controla la caja, el fiado y el stock, y mira cuánto vendes y cuánto ganas. Se instala en el computador del negocio y funciona sin internet.",
+  // Prueba gratis: no hay licencias en el programa; se solicita con el formulario y se coordina la instalación.
+  prueba: {
+    dias: 15,
+    titulo: "Pruébalo gratis por 15 días",
+    texto: "Úsalo en tu negocio, con tus productos y tu caja, antes de decidir. La prueba no tiene costo: si te sirve, conversamos cómo seguir; si no, no pagas nada.",
+    pasos: [
+      { titulo: "Solicita tu prueba", texto: "Completa el formulario o escríbenos por WhatsApp con el nombre y el tipo de tu negocio." },
+      { titulo: "Lo dejamos funcionando", texto: "Te contactamos para coordinar la instalación en tu computador y te ayudamos a cargar tus productos." },
+      { titulo: "Úsalo 15 días", texto: "Vende, cierra caja y revisa tus informes. Al final decides si sigues con Latido POS." },
+    ],
+  },
   destacados: [
+    { valor: "15 días gratis", etiqueta: "pruébalo en tu negocio" },
     { valor: "Sin internet", etiqueta: "la venta nunca se detiene" },
     { valor: "Boleta SII", etiqueta: "con proveedor autorizado" },
-    { valor: "Varias cajas", etiqueta: "en la red del local" },
     { valor: "Hecho en Chile", etiqueta: "pesos, RUT e IVA" },
   ],
   funciones: [
@@ -309,9 +322,17 @@ export const latidoPos = {
       alt: "Estadísticas de Latido POS con las ventas por hora del día y las horas más fuertes destacadas",
     },
   ],
-  paraQuien: ["Almacenes y negocios de barrio", "Minimarkets", "Botillerías", "Panaderías y amasanderías", "Verdulerías y fruterías", "Kioscos y bazares"],
+  paraQuien: ["Minimarkets", "Bazares", "Pequeños negocios de barrio", "Almacenes y kioscos", "Botillerías", "Panaderías y amasanderías", "Verdulerías y fruterías"],
   tecnologia: [".NET 9", "React 19", "TypeScript", "SQLite", "WPF + WebView2", "PHP + MySQL (panel central)", "Instalador para Windows"],
   preguntas: [
+    {
+      p: "¿Cómo funciona la prueba gratis de 15 días?",
+      r: "Solicitas la prueba con el formulario o por WhatsApp, te contactamos para instalar Latido POS en el computador de tu negocio y lo usas 15 días con todas sus funciones, sin costo. Al final decides si quieres seguir usándolo; si no, no pagas nada.",
+    },
+    {
+      p: "¿Sirve para un minimarket, un bazar o un negocio pequeño?",
+      r: "Sí. Está pensado para minimarkets, bazares, almacenes y pequeños negocios de barrio: funciona con un solo computador y una caja, y crece a varias cajas si el local lo necesita. Vende por unidad o por kilo, con o sin lector de códigos de barras.",
+    },
     {
       p: "¿Necesita internet para funcionar?",
       r: "No. Latido POS se instala en el computador del negocio y guarda la información ahí mismo, así que se puede vender aunque se corte internet. La conexión solo se usa para las boletas electrónicas (las pendientes se envían solas al volver la conexión), las actualizaciones y, si se activa, el panel central.",
